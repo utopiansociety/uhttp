@@ -1,4 +1,4 @@
-package httputils
+package uhttp
 
 import (
 	"io/ioutil"
@@ -20,7 +20,7 @@ func TestParseJson(t *testing.T) {
 		Body: ioutil.NopCloser(body),
 	}
 	var b sample
-	err := ParseJson(r, &b)
+	err := Read(r, &b)
 	assert.Nil(t, err)
 	assert.Equal(t, b.Hello, "world", "Hello should contain 'world'")
 }
@@ -30,7 +30,7 @@ func TestJsonWriter(t *testing.T) {
 		Hello: "world",
 	}
 	w := httptest.NewRecorder()
-	err := Json(w, 200, b)
+	err := Write(w, b, 200)
 	assert.Nil(t, err)
 	assert.Equal(t, w.Body.String(), `{"hello":"world"}`, "should be equal to valid json string")
 }

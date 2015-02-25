@@ -1,4 +1,4 @@
-package httputils
+package uhttp
 
 import (
 	"encoding/json"
@@ -6,7 +6,8 @@ import (
 	"net/http"
 )
 
-func ParseJson(r *http.Request, body interface{}) error {
+// Read parses the req body into an interface. The interface should be a pointer.
+func Read(r *http.Request, body interface{}) error {
 	b, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		return err
@@ -15,7 +16,8 @@ func ParseJson(r *http.Request, body interface{}) error {
 	return err
 }
 
-func Json(w http.ResponseWriter, status int, body interface{}) (err error) {
+// Write uses the body and the status to respond to the request.
+func Write(w http.ResponseWriter, body interface{}, status int) (err error) {
 	w.WriteHeader(status)
 	j, err := json.Marshal(body)
 	if err != nil {
