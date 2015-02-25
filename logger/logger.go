@@ -1,4 +1,4 @@
-package uhttp
+package logger
 
 import (
 	"log"
@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-// Logger is the middleware to handle route logging.
-func Logger(next http.Handler) http.Handler {
+// Init is the middleware to handle route logging.
+func Init(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		t1 := time.Now()
 		next.ServeHTTP(w, r)

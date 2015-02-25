@@ -1,12 +1,12 @@
-package uhttp
+package recovery
 
 import (
 	"log"
 	"net/http"
 )
 
-// Recovery how to handle errors right now.
-func Recovery(next http.Handler) http.Handler {
+// Init is how to handle errors right now.
+func Init(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if err := recover(); err != nil {
