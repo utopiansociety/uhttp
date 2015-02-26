@@ -59,6 +59,11 @@ and will be modified to you needs but if you want a generic one, here it is.
 Need to log requests. Here you go. Thats all this middleware does. Again, if you need
 it to be custom. Please fork and change to your desires. This is meant to be generic.
 
+
+## Routing
+
+We suggest using (httpRouter)[https://github.com/julienschmidt/httprouter].
+
 # Contributing
 
 1. Tests must continue to pass.
