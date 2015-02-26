@@ -6,14 +6,26 @@ import (
 	"time"
 )
 
-// Handler is the middleware to handle route logging.
-func Handler(next http.Handler) http.Handler {
-	fn := func(w http.ResponseWriter, r *http.Request) {
-		t1 := time.Now()
-		next.ServeHTTP(w, r)
-		t2 := time.Now()
-		log.Printf("[%s] %q %v\n", r.Method, r.URL.String(), t2.Sub(t1))
+type Wrap struct {
+	M http.Handler
+}
 
-	}
-	return http.HandlerFunc(fn)
+type loggedResponse struct {
+	http.ResponseWriter
+	status int
+}
+
+func (l *loggedResponse) WriteHeader(status int) {
+	l.status = status
+	l.ResponseWriter.WriteHeader(status)
+}
+
+func (h *Wrap) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	t1 := time.Now()
+	lw := &loggedResponse{ResponseWriter: w}
+	h.M.ServeHTTP(lw, r)
+
+	t2 := time.Now()
+	log.Printf("[%d] [%s] %q %v\n", lw.status, r.Method, r.URL.String(), t2.Sub(t1))
+
 }
