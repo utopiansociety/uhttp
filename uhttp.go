@@ -27,3 +27,9 @@ func Write(w http.ResponseWriter, body interface{}, status int) (err error) {
 	_, err = w.Write(j)
 	return err
 }
+
+func Error(w http.ResponseWriter, msg string, status int) (err error) {
+	body := make(map[string]string)
+	body["error"] = msg
+	return Write(w, body, status)
+}
