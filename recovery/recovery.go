@@ -9,10 +9,16 @@ import (
 func Handler(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
+			log.Println("RECOVERY START")
 			if err := recover(); err != nil {
-				log.Printf("panic: %+v", err)
-				http.Error(w, http.StatusText(500), 500)
+				log.Println("RECOVERY ERROR")
+				//log.Panic(err)
+				log.Printf("panic: %#v", err)
+				w.WriteHeader(500)
+				w.Write([]byte("hello!!!"))
+				log.Println("lalalalala")
 			}
+			log.Println("RECOVERY END")
 		}()
 		next.ServeHTTP(w, r)
 	}
